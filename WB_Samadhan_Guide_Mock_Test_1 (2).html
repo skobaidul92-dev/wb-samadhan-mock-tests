@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WB Samadhan Guide | Mock Test 1</title>
+<style>
+:root{--navy:#102653;--blue:#24457f;--gold:#f5c542;--pale:#edf2fb;--ink:#17233b}
+*{box-sizing:border-box}body{margin:0;background:#eef2f8;color:var(--ink);font-family:system-ui,"Noto Sans Bengali",sans-serif}
+header{background:linear-gradient(145deg,#0c1d43,#193a73);color:white;padding:24px 16px;text-align:center}
+.logo{width:92px;height:92px;border:3px solid #eac65a;border-radius:50%;display:grid;place-items:center;margin:0 auto 12px;font-size:35px;background:#102653}
+h1{font-size:25px;margin:5px 0}header p{margin:6px 0;color:#dce6fa}
+.pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:16px}.pill{background:#ffffff20;border:1px solid #ffffff55;border-radius:22px;padding:7px 12px;font-size:14px}
+main{max-width:900px;margin:18px auto;padding:0 12px}
+.panel{background:white;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 4px 16px #13294b12}
+.start{background:var(--gold);border:0;border-radius:12px;padding:15px;font-size:19px;font-weight:800;width:100%;color:#17233b;cursor:pointer}
+.topbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.timer{font-size:21px;font-weight:800;color:#b42318;background:#fff0ed;padding:8px 14px;border-radius:10px}
+.progress{height:9px;background:#e7ecf5;border-radius:20px;overflow:hidden;margin-top:12px}.progress span{display:block;height:100%;background:#2d65b4;width:0}
+.section{font-weight:800;color:#24457f;margin:20px 0 10px;border-bottom:2px solid #e8edf6;padding-bottom:7px}
+.q{border:1px solid #e4e9f2;border-radius:12px;padding:14px;margin:10px 0}
+.q h3{font-size:16px;margin:0 0 12px;line-height:1.6}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{border:1px solid #d7dfec;border-radius:9px;padding:10px;display:flex;gap:8px;align-items:flex-start;cursor:pointer;background:#fff}
+.opt:has(input:checked){border-color:#285ba0;background:#edf4ff}
+.opt input{margin-top:5px;accent-color:#285ba0}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+button.secondary{border:1px solid #cbd5e5;background:#f7f9fc;border-radius:10px;padding:11px 15px;font-weight:700;cursor:pointer}
+button.primary{border:0;background:#244f91;color:white;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}
+.result{display:none}.score{font-size:30px;font-weight:900;color:#163b73}
+.review{border-top:1px solid #e6ebf3;padding:12px 0}.correct{color:#087443}.wrong{color:#b42318}
+.small{font-size:13px;color:#64748b}.hidden{display:none}
+@media(max-width:600px){.opts{grid-template-columns:1fr}h1{font-size:22px}.q{padding:12px}}
+</style>
+</head>
+<body>
+<header>
+<div class="logo">📘</div>
+<h1>WB Samadhan Guide</h1>
+<p>All Competitive Exam Practice</p>
+<div class="pills"><span class="pill">📝 95টি প্রশ্ন</span><span class="pill">⏱️ 75 মিনিট</span><span class="pill">➖ ভুলে 0.25 কাটা</span></div>
+</header>
+<main>
+<section class="panel" id="intro">
+<h2>Mock Test 1</h2>
+<p>অঙ্ক, জেনারেল নলেজ, রিজনিং, বাংলা ও ইংরেজি — প্রতিটি বিভাগে 19টি করে প্রশ্ন।</p>
+<ul><li>সঠিক উত্তর: +1</li><li>ভুল উত্তর: −0.25</li><li>উত্তর না দিলে: 0</li><li>সময় শেষ হলে পরীক্ষা স্বয়ংক্রিয়ভাবে জমা হবে।</li></ul>
+<button class="start" onclick="startTest()">Mock Test 1 শুরু করুন</button>
+</section>
+<section class="panel hidden" id="exam">
+<div class="topbar"><strong id="answered">উত্তর দেওয়া হয়েছে: 0 / 95</strong><div class="timer" id="timer">75:00</div></div>
+<div class="progress"><span id="bar"></span></div>
+<div id="questions"></div>
+<div class="actions"><button class="secondary" onclick="clearAnswers()">সব উত্তর মুছুন</button><button class="primary" onclick="submitTest(false)">পরীক্ষা জমা দিন</button></div>
+<p class="small">জমা দেওয়ার আগে সব প্রশ্ন দেখে নিন। জমা দিলে আর উত্তর পরিবর্তন করা যাবে না।</p>
+</section>
+<section class="panel result" id="result">
+<h2>আপনার পরীক্ষার ফলাফল</h2><div class="score" id="score"></div><p id="stats"></p><h3>উত্তর ও সঠিক সমাধানসূচি</h3><div id="review"></div>
+<button class="primary" onclick="location.reload()">আবার পরীক্ষা দিন</button>
+</section>
+</main>
+<script>
+const sections = [
+["অঙ্ক",[
+["250-এর 20% কত?",["25","40","50","60"],2],
+["একটি জিনিসের ক্রয়মূল্য 400 টাকা এবং বিক্রয়মূল্য 460 টাকা। লাভের হার কত?",["10%","12%","15%","20%"],2],
+["12, 18 ও 24-এর গ.সা.গু কত?",["3","6","12","18"],1],
+["8 ও 12-এর ল.সা.গু কত?",["16","20","24","48"],2],
+["একটি সংখ্যার 3/5 অংশ 24 হলে সংখ্যাটি কত?",["30","36","40","45"],2],
+["60 কিমি/ঘণ্টা বেগে 2.5 ঘণ্টায় কত দূরত্ব অতিক্রম হবে?",["120 কিমি","130 কিমি","140 কিমি","150 কিমি"],3],
+["5টি কলমের দাম 75 টাকা হলে 8টি কলমের দাম কত?",["100 টাকা","110 টাকা","120 টাকা","125 টাকা"],2],
+["10, 15, 20, 25-এর গড় কত?",["15","17.5","20","22.5"],1],
+["একটি আয়তক্ষেত্রের দৈর্ঘ্য 12 সেমি ও প্রস্থ 8 সেমি। ক্ষেত্রফল কত?",["40 বর্গ সেমি","80 বর্গ সেমি","96 বর্গ সেমি","100 বর্গ সেমি"],2],
+["একটি বর্গের বাহু 9 সেমি হলে পরিসীমা কত?",["18 সেমি","27 সেমি","36 সেমি","81 সেমি"],2],
+["সরল সুদে 1000 টাকার 5% বার্ষিক হারে 2 বছরের সুদ কত?",["50 টাকা","100 টাকা","150 টাকা","200 টাকা"],1],
+["360-এর 25% কত?",["60","75","80","90"],3],
+["2:3 অনুপাতে মোট 25 ভাগ করলে ছোট অংশ কত?",["5","10","12","15"],1],
+["একটি ট্রেন 180 মিটার লম্বা। 54 কিমি/ঘণ্টা বেগে একটি খুঁটি অতিক্রম করতে কত সেকেন্ড লাগবে?",["10","12","15","18"],1],
+["0.75 ভগ্নাংশে প্রকাশ করলে কত?",["1/2","2/3","3/4","4/5"],2],
+["15 জন শ্রমিক একটি কাজ 12 দিনে করলে 10 জন শ্রমিক কাজটি কত দিনে করবে?",["15 দিন","16 দিন","18 দিন","20 দিন"],2],
+["কোনো সংখ্যার 40% = 80 হলে সংখ্যাটি কত?",["160","180","200","240"],2],
+["7² − 5² = কত?",["12","20","24","49"],2],
+["একটি জিনিস 800 টাকায় কিনে 720 টাকায় বিক্রি করলে ক্ষতির হার কত?",["5%","8%","10%","12%"],2]
+]],
+["জেনারেল নলেজ",[
+["ভারতের সংবিধান কার্যকর হয় কবে?",["15 আগস্ট 1947","26 জানুয়ারি 1950","26 নভেম্বর 1949","2 অক্টোবর 1950"],1],
+["ভারতের জাতীয় সঙ্গীতের রচয়িতা কে?",["বঙ্কিমচন্দ্র চট্টোপাধ্যায়","রবীন্দ্রনাথ ঠাকুর","কাজী নজরুল ইসলাম","দ্বিজেন্দ্রলাল রায়"],1],
+["ভারতের রাজধানী কোনটি?",["মুম্বাই","কলকাতা","নয়াদিল্লি","চেন্নাই"],2],
+["পশ্চিমবঙ্গের রাজধানী কোনটি?",["শিলিগুড়ি","কলকাতা","দুর্গাপুর","হাওড়া"],1],
+["ভারতের প্রথম রাষ্ট্রপতি কে ছিলেন?",["ড. রাজেন্দ্র প্রসাদ","ড. সর্বপল্লী রাধাকৃষ্ণণ","জওহরলাল নেহরু","জাকির হুসেন"],0],
+["জাতিসংঘ প্রতিষ্ঠিত হয় কত সালে?",["1919","1945","1947","1950"],1],
+["সৌরজগতের বৃহত্তম গ্রহ কোনটি?",["পৃথিবী","শনি","বৃহস্পতি","মঙ্গল"],2],
+["উদ্ভিদ খাদ্য তৈরি করে কোন প্রক্রিয়ায়?",["শ্বসন","সালোকসংশ্লেষ","বাষ্পমোচন","পরাগায়ন"],1],
+["মানবদেহে রক্ত পরিশোধন করে কোন অঙ্গ?",["হৃদপিণ্ড","ফুসফুস","বৃক্ক","যকৃত"],2],
+["ভারতের জাতীয় পশু কোনটি?",["সিংহ","বাঘ","হাতি","চিতাবাঘ"],1],
+["‘লৌহমানব’ নামে পরিচিত কে?",["মহাত্মা গান্ধী","সর্দার বল্লভভাই প্যাটেল","সুভাষচন্দ্র বসু","ভগৎ সিং"],1],
+["দামোদর নদী কোন নদীতে মিশেছে?",["গঙ্গা","হুগলি","ব্রহ্মপুত্র","কাবেরী"],1],
+["ভারতের জাতীয় জলজ প্রাণী কোনটি?",["নীল তিমি","গাঙ্গেয় ডলফিন","কচ্ছপ","কুমির"],1],
+["‘গীতাঞ্জলি’ গ্রন্থের রচয়িতা কে?",["শরৎচন্দ্র","রবীন্দ্রনাথ ঠাকুর","বিভূতিভূষণ","মাইকেল মধুসূদন"],1],
+["পৃথিবীর একমাত্র প্রাকৃতিক উপগ্রহ কোনটি?",["সূর্য","চাঁদ","মঙ্গল","শুক্র"],1],
+["ভারতের সংসদের নিম্নকক্ষের নাম কী?",["রাজ্যসভা","লোকসভা","বিধানসভা","বিধান পরিষদ"],1],
+["ভিটামিন C-এর অভাবে কোন রোগ হয়?",["রিকেটস","স্কার্ভি","বেরিবেরি","রাতকানা"],1],
+["ভারতের স্বাধীনতা দিবস পালিত হয় কবে?",["26 জানুয়ারি","15 আগস্ট","2 অক্টোবর","14 নভেম্বর"],1],
+["‘পিঙ্ক সিটি’ নামে ভারতের কোন শহর পরিচিত?",["জয়পুর","উদয়পুর","জোধপুর","ভোপাল"],0]
+]],
+["রিজনিং",[
+["ধারাটি পূরণ করুন: 2, 4, 8, 16, __",["20","24","30","32"],3],
+["ধারাটি পূরণ করুন: 3, 6, 11, 18, __",["25","27","29","31"],1],
+["বেমানানটি বেছে নিন।",["আম","কলা","গাজর","আপেল"],2],
+["যদি CAT = DBU হয়, তবে DOG = কী?",["EPH","CNG","EOG","FPI"],0],
+["রাহুল উত্তর দিকে 5 মিটার গেল, তারপর ডানে 3 মিটার গেল। সে শুরুর স্থান থেকে কোন দিকে?",["উত্তর-পূর্ব","উত্তর-পশ্চিম","দক্ষিণ-পূর্ব","দক্ষিণ-পশ্চিম"],0],
+["বই : পড়া :: খাবার : __",["রান্না","খাওয়া","কেনা","দেখা"],1],
+["A, C, E, G, __",["H","I","J","K"],1],
+["একটি সারিতে রিনা বাম দিক থেকে 7ম এবং ডান দিক থেকে 9ম। মোট কতজন?",["14","15","16","17"],1],
+["সব গোলাপ ফুল। কিছু ফুল লাল। কোন সিদ্ধান্তটি নিশ্চিত?",["সব গোলাপ লাল","কিছু গোলাপ লাল","সব গোলাপ ফুল","কোনো ফুল লাল নয়"],2],
+["ঘড়িতে 3টা বাজলে ঘণ্টা ও মিনিটের কাঁটার মধ্যবর্তী কোণ কত?",["60°","75°","90°","120°"],2],
+["ধারাটি পূরণ করুন: 1, 4, 9, 16, __",["20","24","25","36"],2],
+["আজ সোমবার হলে 10 দিন পরে কী বার হবে?",["বুধবার","বৃহস্পতিবার","শুক্রবার","শনিবার"],1],
+["বেমানান সংখ্যা বেছে নিন।",["2","3","5","9"],3],
+["ইংরেজি বর্ণমালায় M-এর পর তৃতীয় বর্ণ কোনটি?",["O","P","Q","R"],1],
+["কলম : লেখা :: ছুরি : __",["কাটা","ধোয়া","মাপা","সেলাই"],0],
+["প্রথম সংখ্যার বর্গ ও দ্বিতীয় সংখ্যার বর্গের যোগফল 6 + 2-এর ক্ষেত্রে কত?",["36","38","40","42"],2],
+["একটি ঘনকের কয়টি তল থাকে?",["4","5","6","8"],2],
+["বাবার বোনকে কী বলা হয়?",["মাসি","পিসি","মামী","কাকিমা"],1],
+["ধারাটি পূরণ করুন: 100, 90, 75, 55, __",["30","35","40","45"],0]
+]],
+["বাংলা",[
+["‘অগ্নি’ শব্দের একটি সমার্থক শব্দ কোনটি?",["অনল","অম্বর","অরণ্য","অচল"],0],
+["‘উন্নতি’ শব্দের বিপরীতার্থক শব্দ কোনটি?",["অগ্রগতি","অবনতি","প্রগতি","সমৃদ্ধি"],1],
+["‘যে উপকারীর উপকার স্বীকার করে’—এক কথায় কী?",["কৃতঘ্ন","কৃতজ্ঞ","পরোপকারী","উদার"],1],
+["‘আকাশকুসুম’ বাগধারার অর্থ কী?",["সহজ কাজ","অলীক কল্পনা","আকাশের ফুল","সুন্দর দৃশ্য"],1],
+["‘বিদ্যালয়’ শব্দের সন্ধিবিচ্ছেদ কোনটি?",["বিদ্যা + আলয়","বিদ + আলয়","বিদ্যা + লয়","বিদ + দালয়"],0],
+["‘রাজপুত্র’ কোন সমাসের উদাহরণ?",["দ্বন্দ্ব","দ্বিগু","ষষ্ঠী তৎপুরুষ","বহুব্রীহি"],2],
+["‘সে বই পড়ে’—বাক্যে ক্রিয়াপদ কোনটি?",["সে","বই","পড়ে","কোনোটিই নয়"],2],
+["‘নীল আকাশ’—এখানে ‘নীল’ কোন পদ?",["বিশেষ্য","বিশেষণ","সর্বনাম","অব্যয়"],1],
+["‘আমি’ কোন ধরনের সর্বনাম?",["পুরুষবাচক","নির্দেশক","প্রশ্নবাচক","অনির্দিষ্ট"],0],
+["‘চোখের মণি’ বাগধারার অর্থ কী?",["চোখের রোগ","অত্যন্ত প্রিয়","অত্যন্ত রাগী","অপরিচিত"],1],
+["শুদ্ধ বানান কোনটি?",["মুহুর্ত","মুহূর্ত","মূহুর্ত","মুহূর্ত্ত"],1],
+["‘যিনি গান করেন’—এক কথায় কী?",["গায়ক","লেখক","পাঠক","নায়ক"],0],
+["‘সুখ’ শব্দের বিপরীতার্থক শব্দ কোনটি?",["আনন্দ","দুঃখ","শান্তি","হাসি"],1],
+["‘পাখিরা আকাশে উড়ে’—এখানে ‘পাখিরা’ কোন কারকে?",["কর্তৃকারক","কর্মকারক","অপাদান","অধিকরণ"],0],
+["‘বন’ শব্দের সমার্থক শব্দ কোনটি?",["অরণ্য","নদী","পর্বত","সাগর"],0],
+["‘অতি লোভে তাঁতি নষ্ট’—এটি কী?",["বাগধারা","প্রবাদ","সমাস","সন্ধি"],1],
+["‘দুর্জন’ শব্দের বিপরীতার্থক শব্দ কোনটি?",["সুজন","নির্জন","বর্জন","অর্জন"],0],
+["‘কলম দিয়ে লিখি’—এখানে ‘কলম দিয়ে’ কোন কারক?",["কর্তৃকারক","কর্মকারক","করণ কারক","সম্প্রদান কারক"],2],
+["‘যে দেশকে ভালোবাসে’—এক কথায় কী?",["দেশদ্রোহী","দেশপ্রেমিক","বিদেশি","পর্যটক"],1]
+]],
+["ইংরেজি",[
+["Choose the synonym of 'Happy'.",["Sad","Joyful","Angry","Tired"],1],
+["Choose the antonym of 'Ancient'.",["Old","Modern","Past","Historic"],1],
+["Fill in the blank: She ___ to school every day.",["go","goes","going","gone"],1],
+["Choose the correct article: He is ___ honest man.",["a","an","the","no article"],1],
+["Choose the plural of 'Child'.",["Childs","Childes","Children","Childrens"],2],
+["Choose the correct spelling.",["Beautifull","Beutiful","Beautiful","Beautifal"],2],
+["Identify the noun in the sentence: 'The boy runs fast.'",["The","boy","runs","fast"],1],
+["Choose the past tense of 'Write'.",["Writed","Written","Wrote","Writing"],2],
+["Fill in the blank: They ___ playing football.",["is","am","are","be"],2],
+["Choose the antonym of 'Brave'.",["Courageous","Fearless","Cowardly","Bold"],2],
+["Choose the synonym of 'Begin'.",["Start","Finish","Close","Stop"],0],
+["Select the correct preposition: The book is ___ the table.",["in","on","at","by"],1],
+["Choose the correct sentence.",["He don't like tea.","He doesn't likes tea.","He doesn't like tea.","He not like tea."],2],
+["What is the comparative form of 'Good'?",["Gooder","More good","Best","Better"],3],
+["Change into passive voice: 'Rita writes a letter.'",["A letter is written by Rita.","A letter was written by Rita.","A letter has written by Rita.","Rita is written by a letter."],0],
+["Choose the correct pronoun: This is Rina. ___ is my friend.",["He","She","It","They"],1],
+["Fill in the blank: I have lived here ___ 2020.",["for","since","from","by"],1],
+["Choose the meaning of 'Rapid'.",["Slow","Quick","Weak","Quiet"],1],
+["Identify the adjective: 'It is a beautiful flower.'",["It","is","beautiful","flower"],2]
+]]
+];
+const letters=["A","B","C","D"];let answers={},remaining=75*60,clock=null,finished=false;
+const explanations={"অঙ্ক":["20% = 20/100। তাই 250 × 20/100 = 50।","লাভ = 460 − 400 = 60 টাকা। লাভের হার = (60/400) × 100 = 15%。","12, 18 ও 24-এর সাধারণ গুণনীয়কগুলোর মধ্যে সবচেয়ে বড়টি 6।","8 = 2³ এবং 12 = 2² × 3। ল.সা.গু = 2³ × 3 = 24।","সংখ্যা × 3/5 = 24। সংখ্যা = 24 × 5/3 = 40।","দূরত্ব = বেগ × সময় = 60 × 2.5 = 150 কিমি।","1টি কলমের দাম = 75/5 = 15 টাকা। 8টির দাম = 15 × 8 = 120 টাকা।","গড় = (10 + 15 + 20 + 25)/4 = 70/4 = 17.5।","ক্ষেত্রফল = দৈর্ঘ্য × প্রস্থ = 12 × 8 = 96 বর্গ সেমি।","বর্গের পরিসীমা = 4 × বাহু = 4 × 9 = 36 সেমি।","সরল সুদ = (মূলধন × হার × সময়)/100 = (1000 × 5 × 2)/100 = 100 টাকা।","25% = 1/4। তাই 360-এর 1/4 = 90।","মোট অনুপাতের ভাগ = 2 + 3 = 5। ছোট অংশ = 25 × 2/5 = 10।","54 কিমি/ঘণ্টা = 54 × 5/18 = 15 মিটার/সেকেন্ড। সময় = 180/15 = 12 সেকেন্ড।","0.75 = 75/100 = 3/4।","কাজের পরিমাণ স্থির, তাই শ্রমিক কমলে সময় বাড়ে। সময় = (15 × 12)/10 = 18 দিন।","40% = 80 হলে পুরো সংখ্যা = 80 × 100/40 = 200।","7² − 5² = 49 − 25 = 24।","ক্ষতি = 800 − 720 = 80 টাকা। ক্ষতির হার = (80/800) × 100 = 10%。"],"জেনারেল নলেজ":["ভারতের সংবিধান 26 জানুয়ারি 1950 থেকে কার্যকর হয়; তাই দিনটি প্রজাতন্ত্র দিবস।","ভারতের জাতীয় সঙ্গীত “জন গণ মন”-এর রচয়িতা রবীন্দ্রনাথ ঠাকুর।","ভারতের রাজধানী নয়াদিল্লি।","পশ্চিমবঙ্গের রাজধানী কলকাতা।","ড. রাজেন্দ্র প্রসাদ ছিলেন স্বাধীন ভারতের প্রথম রাষ্ট্রপতি।","জাতিসংঘ 1945 সালে প্রতিষ্ঠিত হয়।","বৃহস্পতি সৌরজগতের বৃহত্তম গ্রহ।","সালোকসংশ্লেষ প্রক্রিয়ায় উদ্ভিদ সূর্যালোকের সাহায্যে খাদ্য তৈরি করে।","বৃক্ক বা কিডনি রক্ত থেকে বর্জ্য পদার্থ ছেঁকে মূত্র তৈরি করে।","বাঘ ভারতের জাতীয় পশু।","সর্দার বল্লভভাই প্যাটেল “লৌহমানব” নামে পরিচিত।","দামোদর নদী হুগলি নদীতে মিশেছে।","গাঙ্গেয় ডলফিন ভারতের জাতীয় জলজ প্রাণী।","“গীতাঞ্জলি” রবীন্দ্রনাথ ঠাকুরের বিখ্যাত কাব্যগ্রন্থ।","চাঁদ পৃথিবীর একমাত্র প্রাকৃতিক উপগ্রহ।","ভারতের সংসদের নিম্নকক্ষ হলো লোকসভা।","ভিটামিন C-এর অভাবে স্কার্ভি রোগ হয়।","ভারতের স্বাধীনতা দিবস 15 আগস্ট পালিত হয়।","রাজস্থান-এর জয়পুর “পিঙ্ক সিটি” নামে পরিচিত।"],"রিজনিং":["প্রতিটি পদ আগের পদের দ্বিগুণ: 2, 4, 8, 16, তাই পরের পদ 32।","পার্থক্যগুলো 3, 5, 7; পরের পার্থক্য 9। তাই 18 + 9 = 27।","আম, কলা ও আপেল ফল; গাজর সবজি। তাই গাজর বেমানান।","প্রতিটি অক্ষরের পরের অক্ষর নিলে CAT → DBU। একইভাবে DOG → EPH।","উত্তর থেকে ডানে গেলে পূর্ব। তাই শুরুর স্থান থেকে অবস্থান উত্তর-পূর্ব দিকে।","বই পড়ার জন্য ব্যবহৃত হয়; খাবার খাওয়ার জন্য ব্যবহৃত হয়।","ইংরেজি বর্ণমালায় A, C, E, G-এর পর I আসে; প্রতিবার একটি বর্ণ বাদ যাচ্ছে।","মোট ব্যক্তি = বাম দিকের অবস্থান + ডান দিকের অবস্থান − 1 = 7 + 9 − 1 = 15।","প্রশ্নেই বলা আছে সব গোলাপ ফুল। তাই “সব গোলাপ ফুল” নিশ্চিত সিদ্ধান্ত।","3টার সময় মিনিটের কাঁটা 12-এ এবং ঘণ্টার কাঁটা 3-এ থাকে; কোণ 90°।","এগুলো বর্গসংখ্যা: 1², 2², 3², 4²। পরেরটি 5² = 25।","সোমবারের 7 দিন পরে আবার সোমবার। আরও 3 দিন পরে বৃহস্পতিবার।","2, 3 ও 5 মৌলিক সংখ্যা; 9 = 3 × 3, তাই 9 বেমানান।","M-এর পর N, O, P—তৃতীয় বর্ণ P।","কলম দিয়ে লেখা হয়; ছুরি দিয়ে কাটা হয়।","6² + 2² = 36 + 4 = 40।","ঘনকের 6টি সমান বর্গাকার তল থাকে।","বাবার বোনকে পিসি বলা হয়।","পার্থক্য যথাক্রমে −10, −15, −20; পরেরটি −25। তাই 55 − 25 = 30।"],"বাংলা":["“অনল” শব্দের অর্থ আগুন; এটি “অগ্নি”-র সমার্থক।","“উন্নতি”-র বিপরীত অর্থ অবনতি।","যিনি উপকারীর উপকার মনে রাখেন, তাঁকে কৃতজ্ঞ বলা হয়।","“আকাশকুসুম” বলতে বাস্তবে অসম্ভব বা অলীক কল্পনা বোঝায়।","বিদ্যালয় = বিদ্যা + আলয়; এখানে স্বরসন্ধি হয়েছে।","রাজপুত্র অর্থ রাজার পুত্র; এটি ষষ্ঠী তৎপুরুষ সমাস।","“পড়ে” কাজটি বোঝাচ্ছে, তাই এটি ক্রিয়াপদ।","“নীল” আকাশের গুণ বা রং বোঝায়, তাই বিশেষণ।","“আমি” বক্তাকে বোঝায়; এটি উত্তম পুরুষবাচক সর্বনাম।","“চোখের মণি” বলতে অত্যন্ত প্রিয় ব্যক্তি বা বস্তু বোঝায়।","শুদ্ধ বানান হলো “মুহূর্ত”।","যিনি গান করেন, তাঁকে গায়ক বলা হয়।","“সুখ”-এর বিপরীতার্থক শব্দ “দুঃখ”।","“পাখিরা” বাক্যের কাজটি করছে, তাই এটি কর্তৃকারক।","“বন”-এর সমার্থক শব্দ “অরণ্য”।","“অতি লোভে তাঁতি নষ্ট” একটি প্রচলিত প্রবাদ।","“দুর্জন”-এর বিপরীতার্থক শব্দ “সুজন”।","যে উপকরণ দিয়ে কাজ করা হয়, তা করণ কারক; এখানে কলম দিয়ে লেখা হয়।","যিনি দেশকে ভালোবাসেন, তিনি দেশপ্রেমিক।"],"ইংরেজি":["Happy means feeling pleasure or joy. Its synonym is Joyful.","Ancient means very old; its opposite is Modern.","With “she” in the simple present tense, the verb takes -s/-es: goes.","“Honest” begins with a vowel sound because h is silent, so “an” is used.","The plural form of “child” is the irregular form “children”.","“Beautiful” is the correct spelling.","“Boy” names a person, so it is the noun in the sentence.","The simple past form of “write” is “wrote”.","“They” takes the plural helping verb “are”: They are playing.","Brave means courageous; the opposite is Cowardly.","Begin means to start; therefore “Start” is the synonym.","The book is placed on the surface of the table, so use “on”.","With “he” in the simple present negative, use “does not” + base verb: like.","The irregular comparative form of “good” is “better”.","In the simple present passive, the object becomes the subject: A letter is written by Rita.","Rina is female, so the correct pronoun is “She”.","“Since” is used with a starting point in time, such as 2020.","Rapid means fast or quick.","“Beautiful” describes the noun “flower”, so it is an adjective."]};
+
+function bn(n){return String(n).replace(/\d/g,d=>"0123456789"[d])}
+function startTest(){document.getElementById("intro").classList.add("hidden");document.getElementById("exam").classList.remove("hidden");render();clock=setInterval(()=>{remaining--;document.getElementById("timer").textContent=bn(Math.floor(remaining/60))+":"+bn(String(remaining%60).padStart(2,"0"));if(remaining<=0)submitTest(true)},1000);window.scrollTo(0,0)}
+function render(){let root=document.getElementById("questions"),num=0;root.innerHTML="";sections.forEach(([name,qs])=>{let h=document.createElement("div");h.className="section";h.textContent=name+" — "+bn(qs.length)+"টি প্রশ্ন";root.appendChild(h);qs.forEach(q=>{num++;let card=document.createElement("div");card.className="q";card.id="q"+num;let title=document.createElement("h3");title.textContent=bn(num)+". "+q[0];card.appendChild(title);let opts=document.createElement("div");opts.className="opts";q[1].forEach((o,i)=>{let lab=document.createElement("label");lab.className="opt";let inp=document.createElement("input");inp.type="radio";inp.name="q"+num;inp.value=i;inp.checked=answers[num]===i;inp.addEventListener("change",()=>{answers[num]=i;updateProgress()});lab.append(inp,document.createTextNode("("+letters[i]+") "+o));opts.appendChild(lab)});card.appendChild(opts);root.appendChild(card)})});updateProgress()}
+function updateProgress(){let n=Object.keys(answers).length;document.getElementById("answered").textContent="উত্তর দেওয়া হয়েছে: "+bn(n)+" / 95";document.getElementById("bar").style.width=(n/95*100)+"%"}
+function clearAnswers(){if(confirm("সব উত্তর মুছে ফেলবেন?")){answers={};render()}}
+function submitTest(auto){if(finished)return;if(!auto&&!confirm("আপনি কি পরীক্ষা জমা দিতে চান?"))return;finished=true;clearInterval(clock);let total=0,correct=0,wrong=0,blank=0,num=0,review="";sections.forEach(([name,qs])=>{qs.forEach(q=>{num++;let a=answers[num];if(a===undefined)blank++;else if(a===q[2]){correct++;total++}else{wrong++;total-=0.25}let status=a===undefined?"উত্তর দেওয়া হয়নি":a===q[2]?"সঠিক উত্তর":"ভুল উত্তর";review+=`<div class="review"><b>${bn(num)}. ${q[0]}</b><p class="${a===q[2]?"correct":a===undefined?"":"wrong"}">${status} · সঠিক উত্তর: (${letters[q[2]]}) ${q[1][q[2]]}${a!==undefined?" · আপনার উত্তর: ("+letters[a]+") "+q[1][a]:""}</p><p><b>ব্যাখ্যা ও সমাধান:</b> ${explanations[name][qs.indexOf(q)]}</p></div>`})});document.getElementById("exam").classList.add("hidden");document.getElementById("result").style.display="block";document.getElementById("score").textContent=total.toFixed(2)+" / 95";document.getElementById("stats").textContent="সঠিক: "+bn(correct)+" | ভুল: "+bn(wrong)+" | উত্তর দেননি: "+bn(blank)+" | "+(auto?"সময় শেষ হয়েছে।":"পরীক্ষা জমা হয়েছে।");document.getElementById("review").innerHTML=review;window.scrollTo(0,0)}
+</script>
+</body></html>
